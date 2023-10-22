@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>atomik - Simpler Concurrent Programming for C++</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Bootstrap 5 Template For Software Startups">
+    <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome JS-->
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.2/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+
+</head>
+
+<body class="docs-page" class="position-relative">
+    <header class="header fixed-top">
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+                    <button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="site-logo"><a class="navbar-brand" href="docs.html"><img class="logo-icon me-2" src="assets/images/site-logo.svg" alt="logo"><span class="logo-text">atomik<span class="text-alt">Docs</span></span></a></div>
+                </div><!--//docs-logo-wrapper-->
+                <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+                    <div class="top-search-box d-none d-lg-flex">
+                        <form class="search-form">
+                            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+                            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    <ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+                        <li class="list-inline-item"><a href="https://github.com/senderista/nextdb"><i class="fab fa-github fa-fw"></i></a></li>
+                    </ul><!--//social-list-->
+                    <!-- <a href="signup.html" class="btn btn-primary d-none d-lg-flex">Sign Up</a> -->
+                </div><!--//docs-top-utilities-->
+            </div><!--//container-->
+        </div><!--//branding-->
+    </header><!--//header-->
+
+    <div class="docs-wrapper">
+        <div id="docs-sidebar" class="docs-sidebar">
+            <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+                    <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+                    <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <nav id="docs-nav" class="docs-nav navbar">
+                <ul class="section-items list-unstyled nav flex-column pb-3">
+                    <li class="nav-item section-title"><a class="nav-link scrollto active" href="#section-1"><span class="theme-icon-holder me-2"><i class="fas fa-map-signs"></i></span>Introduction</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-1-1">Atomicity</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-1-2">Isolation</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-1-3">Consistency</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-1-4">Composability</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-1-5">Failure</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-1-6">Progress</a></li>
+                    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-2"><span class="theme-icon-holder me-2"><i class="fas fa-arrow-down"></i></span>Installation</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-2-1">Download</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-2-2">Install</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-2-3">Build and Run</a></li>
+                    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-3"><span class="theme-icon-holder me-2"><i class="fas fa-box"></i></span>APIs</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-1"><code>atomik::var</code></a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-2"><code>atomik::do_atomically</code></a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-3"><code>atomik::check</code></a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-4"><code>atomik::on_commit</code></a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-3-5"><code>atomik::on_abort</code></a></li>
+                    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-4"><span class="theme-icon-holder me-2"><i class="fas fa-book-reader"></i></span>Resources</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-8-1">What Is Concurrent Programming?</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-8-2">Why Locks Are Hard</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-8-3">Why Atomic Actions Should Be Composable</a></li>
+                    <li class="nav-item section-title mt-3"><a class="nav-link scrollto" href="#section-9"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-9-1">General</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-9-2">Safety</a></li>
+                    <li class="nav-item"><a class="nav-link scrollto" href="#item-9-3">Performance</a></li>
+                </ul>
+
+            </nav><!--//docs-nav-->
+        </div><!--//docs-sidebar-->
+        <div class="docs-content">
+            <div class="container">
+                <article class="docs-article" id="section-1">
+                    <header class="docs-header">
+                        <h1 class="docs-heading">Introduction <span class="docs-time">Last updated: 2023-10-22</span></h1>
+                        <section class="docs-intro">
+                            <p>
+                                <code>atomik</code> is an approach to shared-state concurrent programming based on <i>atomic actions</i><a href="#footnote-1">[1]</a>. An atomic action guarantees <a href="#item-1-1"><i>atomicity</i></a> (all-or-nothing execution, even on failure), <a href="#item-1-2"><i>isolation</i></a> (no other code can observe its effects until it has committed), <a href="#item-1-3"><i>consistency</i></a> (an action always takes a valid application state to another valid state), and <a href="#item-1-4"><i>composability</i></a> (any sequence of atomic actions can be combined to form a new atomic action).
+                            </p>
+
+                            <p>
+                                The most significant advantage of atomic actions over lock-based critical sections is that they can be executed concurrently: they do not require mutual exclusion. Atomic actions give you the simplicity of coarse-grained locking with the performance of fine-grained locking.
+                            </p>
+
+                            <p id="footnote-1">
+                                [1] In the database world, the equivalent of an atomic action is called a <i>transaction</i>. Transactions are often described using the acronym "ACID": <i><b>A</b>tomic</i>, <i><b>C</b>onsistent</i>, <i><b>I</b>solated</i>, <i><b>D</b>urable</i>. Note that one of the properties in our definition of atomic actions (composability) doesn't appear in "ACID", and one of the properties (durability) in "ACID" doesn't appear in our definition. "Composability" isn't part of "ACID" because its importance was poorly understood at the time that transactions were formalized (which is why SQL has poor composability). We don't include "durability" as a required property because atomic actions apply only to memory, not storage. However, the current state of the <code>atomik</code> store can be consistently written to storage (<i>checkpointing</i>) and later read from storage (<i>recovery</i>).
+                            </p>
+                        </section><!--//docs-intro-->
+                    </header>
+
+                    <section class="docs-section" id="item-1-1">
+                        <h2 class="section-heading">Atomicity</h2>
+                        <p>
+                            Atomicity, again, is the property that an action takes effect either entirely or not at all, regardless of failures. Lock-based critical sections do not have atomicity in the presence of side effects that can fail (unless you manually roll back changes after failure or depend on RAII for cleanup), although they can achieve atomicity in the absence of side effects (if there are no side effects that can fail, the critical section cannot fail since it has exclusive access to the data it's modifying). In contrast, atomic actions can fail a single execution due to data conflicts with concurrently executing atomic actions, but their modifications to data are always rolled back on failure and the action is retried until it succeeds (if you're wondering about starvation, we'll address that later). One advantage of lock-based critical sections is that they don't have to be retried, so side effects don't need to be somehow undone. Atomic actions can accommodate side effects in a variety of ways: they can defer executing them until the atomic action succeeds (<code>atomik::on_commit()</code>), they can execute them immediately, and then execute a compensating action if the atomic action must be retried (<code>atomik::on_abort()</code>), or they can designate themselves as <i>infallible</i>, which means they cannot fail, so they don't need to be retried. (Read-only atomic actions are automatically infallible.)
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-1-2">
+                        <h2 class="section-heading">Isolation</h2>
+                        <p>
+                            Isolation, again, is the property that an atomic action cannot observe the effects of any concurrently executing atomic actions. The isolation of lock-based critical sections is limited, because any code that does not observe the locking protocol can observe their effects. But with atomic actions, there is no "back door": it is impossible to read or write any <code>atomik::var</code> outside an atomic action. This means that <i>data races</i> (unsynchronized concurrent access to a memory location, where at least one access is a write) on an <code>atomik::var</code> are literally impossible: the <code>atomik</code> runtime mediates all access to memory wrapped in an <code>atomik::var</code>, so you never need to run a data race detector. What it doesn't prevent, however, are <i>race conditions</i>, which unlike data races are application-specific: they are violations of an application's <a href="#item-1-3"><i>consistency</i></a> requirements.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-1-3">
+                        <h2 class="section-heading">Consistency</h2>
+                        <p>
+                            "Consistent" has meaning only in the context of a particular application: it means that, given the set of invariants defined by the application on its state, the current application state satisfies those invariants. Imagine an application that stores a person's location information along with their name and other identifying information. One reasonable invariant for this application to enforce would be that the city and ZIP code associated with a person's location must match. Thus, it would not be a consistency violation to modify a person's name independently of their location, but it would violate consistency if we allowed updates to their city and ZIP code to be non-atomic: the initial state ("New York", "10001") and the final state ("Seattle", "98101") are consistent, but the intermediate state ("Seattle", "10001") is inconsistent, so it must never be observed from outside the updating thread. The <a href="#item-1-2"><i>isolation</i></a> property of atomic actions ensures that such inconsistent intermediate states are unobservable to other code. But because consistent states are relative to the application, only the programmer can define consistency. In lock-based concurrency, this is done by defining the boundaries of critical sections. In the <code>atomik</code> concurrency model, this is done by defining the boundaries of atomic actions. Once those boundaries are defined, the <code>atomik</code> runtime ensures that all application states are consistent, as defined by the application.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-1-4">
+                        <h2 class="section-heading">Composability</h2>
+                        <p>
+                            Composability is the ability to make one new thing out of several existing things. In programming, it can mean making a new structure out of several smaller structures, or a new function out of several smaller functions. For <code>atomik</code>, it means making a new atomic action out of a set of existing atomic actions, by just writing a new atomic action that calls functions defining those atomic actions. (You can also combine atomic actions directly using <code>atomik::and_then</code> and <code>atomik::or_else</code>, but for now we'll just look at calling functions containing an atomic action.)
+                        </p>
+                            
+                        <p>
+                            One of the reasons that locks make programming hard is that they don't compose. What does this mean? It means that if you have two methods on a data structure, each of which is thread-safe, and you call both of those methods from a new function, the new function is not automatically thread-safe. To make the new function thread-safe, you need to have access to the data structure's locking implementation. Here's a simple <a href="https://en.cppreference.com/w/cpp/thread/lock_tag_t#Example">example</a>: a bank account application that requires thread-safe access to individual accounts.
+                        </p>
+
+                        <h5>This is Your Code on Locks</h5>
+						<p>
+                             Note that each account needs its own mutex, and the mutexes associated with each account need to be carefully managed to avoid deadlock and race conditions. The <code>transfer()</code> function cannot be naturally composed from the <code>increment_balance()</code> function. Instead we must have full knowledge of and access to the synchronization implementation of the <code>bank_account</code> type, and cannot reuse the <code>increment_balance()</code> function.
+                        </p>
+
+                        <div class="docs-code-block" id="account-increment-locks">
+                            <pre class="shadow-lg rounded">
+                                <code class="hljs cpp">
+#include &lt;mutex&gt;
+
+struct bank_account {
+    int balance;
+    std::mutex m;
+};
+
+void increment_balance(bank_account &account, int amount)
+{
+    std::lock_guard lock{account.m};
+
+    account.balance += amount;
+}
+
+void racy_transfer(bank_account &from, bank_account &to, int amount)
+{
+    // we do not hold both locks at the same time,
+    // so a partially completed transfer is observable to other threads,
+    // breaking the invariant that the total change in balances is zero!
+    increment_balance(from, -amount);
+    increment_balance(to, amount);
+}
+
+void deadlocking_transfer(bank_account &from, bank_account &to, int amount)
+{
+    // if we concurrently call this function with `from` and `to` reversed,
+    // it will deadlock, because we acquire the locks in the opposite order!
+    std::lock_guard lock1{from.m};
+    std::lock_guard lock2{to.m};
+
+    from.balance -= amount;
+    to.balance += amount;
+}
+
+void correct_transfer(bank_account &from, bank_account &to, int amount)
+{
+    if(&from == &to) return; // avoid deadlock in case of self transfer
+
+    // lock both mutexes without deadlock
+    std::lock(from.m, to.m);
+    // make sure both already-locked mutexes are unlocked at the end of scope
+    std::lock_guard lock1{from.m, std::adopt_lock};
+    std::lock_guard lock2{to.m, std::adopt_lock};
+
+    from.balance -= amount;
+    to.balance += amount;
+}
+                                </code>
+                            </pre>
+                        </div><!--//docs-code-block-->
+                        <p>
+                            These toy examples of deadlock and race conditions have simple solutions, but real systems make composability much more difficult: you may not have access to the locking implementation at all, or there may be no way to acquire all locks in a single fixed order to avoid deadlock.
+                        </p>
+
+                        <h5>This is Your Code on <code>atomik</code></h5>
+						<p>
+                            Here's an example of the same bank account application using <code>atomik</code> instead of locks. Note that once we have the <code>increment_balance()</code> function, we can naturally compose it to create the <code>transfer()</code> function. Also, no explicit synchronization is required anywhere; the programmer is only responsible for defining the scope of atomic actions to preserve their application's invariants.
+                        </p>
+                        <div class="docs-code-block" id="account-increment-atomik">
+                            <pre class="shadow-lg rounded">
+                                <code class="hljs cpp">
+#include "atomik.hpp"
+
+struct bank_account {
+    int balance;
+};
+
+void increment_balance(atomik::var&lt;bank_account&gt; account_var, int amount)
+{
+    atomik::do_atomically(
+        []() {
+            auto account = account_var.get();
+            account.balance += amount;
+            account_var.set(account);
+        }
+    );
+}
+
+void transfer(atomik::var&lt;bank_account&gt; account1_var, atomik::var&lt;bank_account&gt; account2_var, int amount)
+{
+    atomik::do_atomically(
+        []() {
+            increment_balance(account1_var, -amount);
+            increment_balance(account2_var, amount);
+        }
+    );
+}
+                                </code>
+                            </pre>
+                        </div><!--//docs-code-block-->
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-1-5">
+                        <h2 class="section-heading">Failure</h2>
+                        <p>
+                           An atomic action can fail because of a data conflict, an unsatisfied <a href="#item-3-3"><i>predicate</i></a>, or an unhandled exception. In the first two cases, the atomic action will automatically retry (up to a user-specified limit or timeout, after which the atomic action will abort and throw an informative exception). In the last case, the atomic action will undo its changes and rethrow the exception. Thus, exceptions thrown from inside an atomic action can be handled either inside the atomic action (so it doesn't need to undo its changes and retry), or outside it (so you can handle exceptions rethrown after the atomic action has undone its changes).
+                        </p>
+
+                        <p>
+                            When an atomic action fails due to a data conflict, it is automatically retried, but it doesn't necessarily restart immediately. Instead, it may wait for a short random period (increasing with the number of retries) to try to avoid another data conflict, or it may be added to a queue of atomic actions that are executed serially to avoid conflicts. Eventually, if it reaches a retry limit, then all atomic actions (except read-only actions) in the system may be forced to execute serially to prevent any further conflicts with the retrying action.
+                        </p>
+
+                        <p>
+                            An atomic action can also fail because a predicate supplied to <a href="#item-3-3"><code>atomik::check()</code></a> evaluated to false. This means that a necessary condition for progress is not satisfied, so the atomic action undoes its changes, waits until at least one <code>atomik::var</code> it read has changed, and then retries. <code>atomik::check()</code> has semantics roughly equivalent to a condition variable used with a mutex, but there is a crucial difference: the retried execution could follow a completely different codepath than the original execution, so the <code>atomik::check()</code> predicate that failed might not even be evaluated during the retried execution! This allows a programmer to specify many possible branches for an atomic action, each depending on a different <code>atomik::check()</code> predicate. The first predicate that is satisfied will determine the codepath taken for the current execution of the atomic action. It is possible, of course, for no <code>atomik::check()</code> predicate to ever be satisfied, so the programmer can specify a failure policy for this case. If no retried execution succeeds within a specified timeout, or if the number of retries reaches a specified limit, then the atomic action aborts and throws an informative exception.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-1-6">
+                        <h2 class="section-heading">Progress</h2>
+                        <p>
+                            <i>Progress</i> means that "something good will eventually happen." The "good thing" could be a thread acquiring a lock, an atomic action committing its changes, or all threads in a pool completing their tasks. Here we're interested in the second case: we want any atomic action to succeed within a given time or a given number of retries. Locks guarantee progress only under very restrictive conditions: deadlock, livelock, and starvation must be impossible. Avoiding deadlock requires either specifying a global order on all locks or lock acquirers, or monitoring the system for symptoms of deadlock. The former is often impossible in complex, dynamic systems (such as conventional database transactions), and the latter is expensive and can easily turn deadlock into livelock<a href="#footnote-2">[2]</a> if not carefully implemented. There are simple deadlock-, livelock-, and starvation-free locking protocols<a href="#footnote-3">[3]</a>, but they require aborts and retries (just like atomic actions), which removes one of the major advantages of locks: that side effects never need to be deferred or undone. 
+                        </p>
+
+                        <p>
+                            The <code>atomik</code> platform guarantees progress for every atomic action by automatically retrying on data conflicts and unsatisfied predicates. The system ensures that every atomic action can eventually run without any data conflicts, and that unsatisfied predicates eventually cause an abort after a user-specified timeout or retry limit. Deadlock is impossible because no locks are used, and livelock and starvation are prevented by forcing conflicting atomic actions to wait until the retrying action has committed.
+                        </p>
+
+                        <p id="footnote-2">
+                            [2] A database lock manager typically monitors the "waits-for graph" of locks and their owning and waiting transactions for cycles in the graph, which indicate deadlock. One of the waiting transactions in a cycle must be aborted to resolve a deadlock, but if this choice is arbitrary it can lead to livelock: the same two deadlocking transactions can repeatedly abort each other. This is also true of the "no-wait" database locking algorithm that avoids waiting for locks entirely: when a lock acquirer encounters an owned lock, it immediately aborts and retries. Again, the same two transactions can repeatedly abort each other under this algorithm, leading to livelock.
+                        </p>
+
+                        <p id="footnote-3">
+                            [3] The "wound-wait" and "wait-die" database locking algorithms use transaction timestamps to prevent deadlock, livelock, and starvation. These algorithms can actually be used to implement atomic actions, but are difficult for a programmer to directly implement and integrate with an existing locking protocol.
+                        </p>
+                    </section><!--//section-->
+
+                </article>
+
+                <article class="docs-article" id="section-2">
+                    <header class="docs-header">
+                        <h1 class="docs-heading">Installation</h1>
+                        <section class="docs-intro">
+                            <p>The  <code>atomik</code> platform can be downloaded as a shared or statically linked client library, plus a standalone server binary. A sample Makefile is provided, as well as a CMake install script for use within CMake projects.</p>
+                        </section><!--//docs-intro-->
+                    </header>
+                     <section class="docs-section" id="item-2-1">
+                        <h2 class="section-heading">Download</h2>
+                        <p>Download a GZIP archive from the "Releases" tab on the GitHub repository page.</p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-2-2">
+                        <h2 class="section-heading">Install</h2>
+                        <p>Install the <code>atomik</code> CMake package using the provided CMake script.</p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-2-3">
+                        <h2 class="section-heading">Build and Run Sample Application</h2>
+                        <p>Build the sample <code>bank_account</code> CMake project and run the test suite using CTest.</p>
+                    </section><!--//section-->
+                </article><!--//docs-article-->
+
+
+                <article class="docs-article" id="section-3">
+                    <header class="docs-header">
+                        <h1 class="docs-heading">APIs</h1>
+                        <section class="docs-intro">
+                            <p>
+                                The <code>atomik</code> APIs fall into three broad categories:
+                                <ul>
+                                    <li>Accessing data within an atomic action (<code>atomik::var</code>)</li>
+                                    <li>Executing an atomic action (<code>atomik::do_atomically()</code>)</li>
+                                    <li>Retrying an atomic action when a predicate is not satisfied (<code>atomik::check()</code>)</li>
+                                </ul>
+                            </p>
+                        </section><!--//docs-intro-->
+                    </header>
+                     <section class="docs-section" id="item-3-1">
+                        <h2 class="section-heading"><code>template&lt;typename T&gt; atomik::var&lt;T&gt;</code></h2>
+                        <p>
+                            Provides memory and concurrency management for a user-defined type <code>T</code>. <code>T</code> must either be <a href="https://en.cppreference.com/w/cpp/language/classes#Trivial_class">trivial</a> or implement the <code>get_serialized_size()</code>, <code>serialize()</code> and <code>deserialize()</code> methods (via either its definition or template specialization). <code>atomik::var</code> can only be accessed within an atomic action.
+                        </p>
+
+                        <ul>
+                            <li id="item-3-1-1">
+                                <h3 class="section-heading"><code>T atomik::var&lt;T&gt;::get()</code></h3>
+                                <p>
+                                    Reads the current version of this <code>atomik::var</code>, returning its contents by value.
+                                </p>
+                            </li>
+                            <li id="item-3-1-2">
+                                <h3 class="section-heading"><code>const T* atomik::var&lt;T&gt;::get_ptr()</code></h3>
+                                <p>
+                                    Reads the current version of this <code>atomik::var</code>, returning a <code>const</code> pointer to its contents.
+                                </p>
+                            </li>
+                            <li id="item-3-1-3">
+                                <h3 class="section-heading"><code>void atomik::var&lt;T&gt;::set(const T& value)</code></h3>
+                                <p>
+                                    Sets the contents of this <code>atomik::var</code> to <code>value</code>. Subsequent calls to <code>atomik::var::get()</code> from within this atomic action will return <code>value</code>.
+                                </p>
+                            </li>
+                            <li id="item-3-1-4">
+                                <h3 class="section-heading"><code>T atomik::var&lt;T, F&gt;::update(F func)</code></h3>
+                                <p>
+                                    Evaluates <code>func</code> (typically a lambda, but can be any callable object) on the current value of this <code>atomik::var</code>, sets the contents of this <code>atomik::var</code> to the result, and returns the result by value. Subsequent calls to <code>atomik::var::get()</code> from within this atomic action will return the result.
+                                </p>
+                            </li>
+                        </ul>
+                            
+                        </section><!--//section-->
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-3-2">
+                        <h2 class="section-heading"><code>template&lt;typename A&gt; void atomik::do_atomically(A action)</code></h2>
+                        <p>
+                            Atomically executes the callable object <code>action</code>, automatically retrying on data conflicts. All accesses to <code>atomik::var</code>s within <code>A</code> are guaranteed to be <a href="#item-1-1"><i>atomic</i></a> and <a href="#item-1-2"><i>isolated</i></a>.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-3-3">
+                        <h2 class="section-heading"><code>void atomik::check(bool pred)</code></h2>
+                        <p>
+                            If the boolean expression <code>pred</code> evaluates to <code>false</code>, undoes all changes made by this atomic action (including executing all registered <code>on_abort</code> handlers), waits for any <code>atomik::var</code> already read by this atomic action to change, and then retries the atomic action. If a user-specified timeout or retry limit is reached, throws a <code>retry_timeout</code> or <code>retry_limit</code> exception respectively.
+                        </p>
+
+                        <p>
+                            It's important to note that, as with any form of conditional blocking synchronization, it is technically possible to create a deadlock using <code>atomik::check()</code>. Here's the pattern to avoid (assume the <code>atomik::var</code>s "X" and "Y" are both initially <code>false</code>):
+                        </p>
+                        <div class="docs-code-block" id="check-deadlock">
+                            <pre class="shadow-lg rounded">
+                                <code class="hljs cpp">
+atomik::do_atomically(
+    []() {
+        atomik::var<bool> x_var = atomik::get_var_by_key("X");
+        atomik::var<bool> y_var = atomik::get_var_by_key("Y");
+        atomik::check(x_var.get() == true);
+        y_var.set(true);
+    }
+);
+
+atomik::do_atomically(
+    []() {
+        atomik::var<bool> x_var = atomik::get_var_by_key("X");
+        atomik::var<bool> y_var = atomik::get_var_by_key("Y");
+        atomik::check(y_var.get() == true);
+        x_var.set(true);
+    }
+);
+                                </code>
+                            </pre>
+                        </div><!--//docs-code-block-->
+                        <p>
+                            Since neither atomic action can commit until the other commits, both would block indefinitely if <code>atomik::check()</code> were to block indefinitely. Fortunately, the fact that <code>atomik::check()</code> always takes a timeout or retry limit argument prevents a permanent deadlock: instead of both threads blocking forever, an informative exception will be thrown on both of the blocking threads.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-3-4">
+                        <h2 class="section-heading"><code>template&lt;typename A&gt; void atomik::on_commit(A action)</code></h2>
+                        <p>
+                             Defers execution of the callable object <code>action</code> until the atomic action commits. All commit handlers (including those registered in nested actions) are executed in LIFO order.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-3-5">
+                        <h2 class="section-heading"><code>template&lt;typename A&gt; void atomik::on_abort(A action)</code></h2>
+                        <p>
+                            Defers execution of the callable object <code>action</code> until the atomic action aborts or retries. All abort handlers (including those registered in nested actions) are executed in LIFO order.
+                        </p>
+                    </section><!--//section-->
+                </article><!--//docs-article-->
+
+                <article class="docs-article" id="section-8">
+                    <header class="docs-header">
+                        <h1 class="docs-heading">Resources</h1>
+                        <section class="docs-intro">
+                            <p>
+                                The <code>atomik</code> platform is based on ideas from multiversioned in-memory databases and Software Transactional Memory. A good introduction to the former is <a href="#footnote-4">[4]</a>. A good introduction to the latter is <a href="#footnote-5">[5]</a>. More specific resources are detailed below.
+                            </p>
+
+                            <p id="footnote-4">
+                                [4] <a href="https://www.vldb.org/pvldb/vol10/p781-Wu.pdf">"An empirical evaluation of
+                                in-memory multi-version concurrency control"</a>
+                            </p>
+
+                            <p id="footnote-5">
+                                [5] <a href="https://dl.acm.org/doi/pdf/10.1145/1189276.1189288">"Unlocking concurrency: multicore programming with transactional memory"</a>
+                            </p>
+                        </section><!--//docs-intro-->
+                    </header>
+                     <section class="docs-section" id="item-8-1">
+                        <h2 class="section-heading">What Is Concurrent Programming?</h2>
+                        <p>
+                            <a href="https://dl.acm.org/doi/pdf/10.5555/2385452">"The Art of Multiprocessor Programming"</a> is a comprehensive introduction to concurrent programming, covering both blocking (lock-based) and nonblocking (lock-free) techniques.
+                        </p>
+
+                        <p>
+                            <a href="https://arxiv.org/pdf/1701.00854.pdf">"Is Parallel Programming Hard, And, If So, What Can You Do About It?"</a> covers hardware and systems programming aspects of concurrent programming in more depth.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-8-2">
+                        <h2 class="section-heading">Why Locks Are Hard</h2>
+                        <p>
+                            <a href="http://gotw.ca/publications/mill36.htm">"The Trouble With Locks"</a> is a good introduction to the subtleties of concurrent programming with locks, with many examples in C++.
+                        </p>
+                        <p>
+                            <a href="https://dl.acm.org/doi/pdf/10.1145/1189276.1189288">"Unlocking concurrency: multicore programming with transactional memory"</a> also describes several issues with locks and how they are solved by the transactional model.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-8-3">
+                            <h2 class="section-heading">Why Atomic Actions Should Be Composable</h2>
+                        <p>
+                            <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2005/01/2005-ppopp-composable.pdf">"Composable Memory Transactions"</a>, the original paper on the Haskell language's Software Transactional Memory implementation, introduces the <code>retry</code> API, which is the inspiration for <code>atomik::check()</code>. (You may also recognize <code>TVar</code> and <code>atomically</code> as the equivalents of <code>atomik::var</code> and <code>atomik::do_atomically()</code> respectively.) The paper explains why the somewhat surprising semantics of <code>retry</code> are essential for the composability of atomic actions.
+                        </p>
+                        
+                        <p>
+                            <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4438.pdf">"Industrial Experience with Transactional Memory at Wyatt Technology"</a> describes a C++ STM with a very similar API to <code>atomik</code> (but a much less scalable implementation: it uses a single global reader-writer lock to coordinate all transactions). A <a href="https://www.youtube.com/watch?v=k20nWb9fHj0">companion talk</a> is also available.
+                        </p>
+                        
+                    </section><!--//section-->
+                </article><!--//docs-article-->
+
+
+                <article class="docs-article" id="section-9">
+                    <header class="docs-header">
+                        <h1 class="docs-heading">FAQs</h1>
+                        <section class="docs-intro">
+                            <p>
+                                Some common questions and answers about the <code>atomik</code> platform.
+                            </p>
+                        </section><!--//docs-intro-->
+                    </header>
+                     <section class="docs-section" id="item-9-1">
+                        <h2 class="section-heading">General</h2>
+                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>What problem is this solving?</h5>
+                        <p>
+                            The <code>atomik</code>platform solves the problem of making shared-state concurrent programming easier and safer.
+                        </p>
+                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Why is shared-state concurrent programming even necessary?</h5>
+                        <p>
+                            CPUs stopped getting faster around 2005, limiting single-thread performance and forcing CPU designers to compensate by putting multiple CPU cores on a chip and multiple chips in a single machine. The only way to get good performance out of these multiple CPU cores is to give them many things to do at once, which is the definition of concurrent programming. There are many ways to do concurrent programming, but lots of programs need to change the same data from many threads at once, which requires shared-state concurrent programming. The only proven approaches to shared-state concurrent programming are locks and atomic actions.
+                        </p>
+                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Why aren't locks good enough for shared-state concurrent programming?</h5>
+                        <p>
+                            Locks can work well for simple programs, especially if the program can be structured rigidly enough to avoid deadlock. They are easy to reason about in simple cases and don't have hidden implementation overheads. But locks don't work well when a program is too complicated or dynamic for a static lock ordering protocol, or when you need to compose multiple thread-safe operations into a new thread-safe operation. Even worse, writing a complex system using locks forces you to choose between simplicity and safety on one hand (coarse-grained locks), and scalability on the other (fine-grained locks). Atomic actions give you simplicity, safety, and scalability, all at the same time.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-9-2">
+                        <h2 class="section-heading">Safety</h2>
+                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>What if I need to pop up a dialog or send an email in my atomic action?</h5>
+                        <p>
+                            In general, you should avoid irreversible side effects within an atomic action. But sometimes that's just not possible. In that case, you have the problem that the atomic action could retry many times due to data conflicts, and you probably don't want the side effect executed on every retry! The <code>atomik</code> platform gives you three options to deal with side effects in an atomic action:
+                            <ol>
+                                <li>Defer execution of the side effect until the atomic action commits (<a href="#item-3-4"><code>atomik::on_commit()</code></a>).</li>
+                                <li>Execute the side effect immediately, but execute a compensating action whenever the atomic action retries or throws an exception (<a href="#item-3-5"><code>atomik::on_abort()</code></a>).</li>
+                                <li>Designate the atomic action as <i>infallible</i> (or read-only), so it's never retried (<code>atomik::action_type::infallible</code> or <code>atomik::action_type::read_only</code>).</li>
+                            </ol>
+                        </p>
+                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>How long will it take my atomic action to commit if it keeps encountering data conflicts?</h5>
+                        <p>
+                            Whenever an atomic action must retry due to a data conflict, the thread executing it increases its probability of scheduling the next retry for serial execution. Any thread executing an atomic action that causes a retry (i.e., the "winner" of a conflict) does the same thing. The result is that any pair of conflicting atomic actions quickly find themselves both scheduled for serial execution, where they cannot conflict. If an atomic action reaches a retry limit, it will become "infallible": it will wait for all active executions of atomic actions to complete and then force all new executions (including retries) to be serially scheduled. (Because read-only atomic actions cannot cause conflicts, they can still run concurrently.)
+                        </p>
+                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Can I access shared data both inside and outside an atomic action?</h5>
+                        <p>
+                            In general, no. The <code>atomik</code> platform does not restrict access to global variables inside an atomic action, but such variables should only be accessed if they are immutable. Otherwise, you risk data races, which is exactly the problem that <code>atomik</code> solves! Even if you use <code>std::atomic</code> types for global variables, accessing a non-<code>atomik::var</code> global variable inside an atomic action subverts the <a href="#item-1-2"><i>isolation</i></a> guarantee that the effects of any atomic action will not be visible until it commits, nor will any effects outside an atomic action be visible within the atomic action. The only non-<code>atomik::var</code> variables that are safe to access from within an atomic action are local variables, thread-local variables, and immutable global variables. Fortunately, if you observe this restriction, the <code>atomik</code> platform ensures that you cannot access an <code>atomik::var</code> outside an atomic action (such access will throw an exception).
+                        </p>
+                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Is it safe to reuse a pointer read from <code>atomik::var::get_ptr()</code>?</h5>
+                        <p>
+                            Yes! The internal copy-on-write implementation of <code>atomik::var::set()</code> guarantees that the address returned by <code>atomik::var::get_ptr</code> is <i>stable</i>: the returned address will never change, and the memory at that address will never be reused during the lifetime of this atomic action, even if another atomic action concurrently overwrites the value read by this atomic action, causing it to later abort.
+                        </p>
+                    </section><!--//section-->
+
+                    <section class="docs-section" id="item-9-3">
+                            <h2 class="section-heading">Performance</h2>
+                            <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>How much will this slow down my program?</h5>
+                            <p>
+                                The latency overhead of atomic actions is very low: for a single thread it's about 200ns (and improving). Of course, in a critical path it may still be too high, but only benchmarking will tell. Scalability is on par with fine-grained locking (you should expect linear scalability up to at least 4-8 threads, and considerably more threads in the near future).
+                            </p>
+                            <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>How much memory does this use?</h5>
+                            <p>
+                                The base memory overhead of the <code>atomik</code> runtime (not accounting for long-lived data) is ~2.5MB per active thread. The runtime can accommodate up to 256GB of total data (with some internal overhead). Garbage collection can be delayed indefinitely by a long-running atomic action, but this can be addressed by timeout or memory usage policies configured by the user.
+                            </p>
+                            <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Could the implementation internally deadlock or livelock?</h5>
+                            <p>
+                                No. The implementation is fully nonblocking: there are no locks used internally at all. All operations on the critical path are lock-free or wait-free.
+                            </p>
+                    </section><!--//section-->
+                </article><!--//docs-article-->
+            </div>
+        </div>
+    </div><!--//docs-wrapper-->
+
+
+    <!-- Javascript -->
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+
+    <!-- Page Specific JS -->
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+    <script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
+    <script src="assets/js/docs.js"></script>
+
+</body>
+</html>
+
