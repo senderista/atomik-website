@@ -160,7 +160,7 @@ void transfer(
     int amount)
 {
     atomik::do_atomically(
-        []() {
+        [=]() {
             from.set({from.get().balance - amount});
             to.set({to.get().balance + amount});
         }
