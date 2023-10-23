@@ -480,15 +480,15 @@ atomik::do_atomically(
                     </header>
                      <section class="docs-section" id="item-9-1">
                         <h2 class="section-heading">General</h2>
-                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>What problem is this solving?</h5>
+                        <h5 class="pt-3" id="item-9-1-1"><i class="fas fa-question-circle me-1"></i>What problem is this solving?</h5>
                         <p>
                             The <code>atomik</code>platform solves the problem of making shared-state concurrent programming easier and safer.
                         </p>
-                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Why is shared-state concurrent programming even necessary?</h5>
+                        <h5 class="pt-3" id="item-9-1-2"><i class="fas fa-question-circle me-1"></i>Why is shared-state concurrent programming even necessary?</h5>
                         <p>
                             CPUs stopped getting faster around 2005, limiting single-thread performance and forcing CPU designers to compensate by putting multiple CPU cores on a chip and multiple chips in a single machine. The only way to get good performance out of these multiple CPU cores is to give them many things to do at once, which is the definition of concurrent programming. There are many ways to do concurrent programming, but lots of programs need to change the same data from many threads at once, which requires shared-state concurrent programming. The only proven approaches to shared-state concurrent programming are locks and atomic actions.
                         </p>
-                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Why aren't locks good enough for shared-state concurrent programming?</h5>
+                        <h5 class="pt-3" id="item-9-1-3"><i class="fas fa-question-circle me-1"></i>Why aren't locks good enough for shared-state concurrent programming?</h5>
                         <p>
                             Locks can work well for simple programs, especially if the program can be structured rigidly enough to avoid deadlock. They are easy to reason about in simple cases and don't have hidden implementation overheads. But locks don't work well when a program is too complicated or dynamic for a static lock ordering protocol, or when you need to compose multiple thread-safe operations into a new thread-safe operation. Even worse, writing a complex system using locks forces you to choose between simplicity and safety on one hand (coarse-grained locks), and scalability on the other (fine-grained locks). Atomic actions give you simplicity, safety, and scalability, all at the same time.
                         </p>
@@ -496,7 +496,7 @@ atomik::do_atomically(
 
                     <section class="docs-section" id="item-9-2">
                         <h2 class="section-heading">Safety</h2>
-                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>What if I need to pop up a dialog or send an email in my atomic action?</h5>
+                        <h5 class="pt-3" id="item-9-2-1"><i class="fas fa-question-circle me-1"></i>What if I need to pop up a dialog or send an email in my atomic action?</h5>
                         <p>
                             In general, you should avoid irreversible side effects within an atomic action. But sometimes that's just not possible. In that case, you have the problem that the atomic action could retry many times due to data conflicts, and you probably don't want the side effect executed on every retry! The <code>atomik</code> platform gives you three options to deal with side effects in an atomic action:
                             <ol>
@@ -505,31 +505,35 @@ atomik::do_atomically(
                                 <li>Designate the atomic action as <i>infallible</i> (or read-only), so it's never retried (<code>atomik::action_type::infallible</code> or <code>atomik::action_type::read_only</code>).</li>
                             </ol>
                         </p>
-                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>How long will it take my atomic action to commit if it keeps encountering data conflicts?</h5>
+                        <h5 class="pt-3" id="item-9-2-2"><i class="fas fa-question-circle me-1"></i>How long will it take my atomic action to commit if it keeps encountering data conflicts?</h5>
                         <p>
                             Whenever an atomic action must retry due to a data conflict, the thread executing it increases its probability of scheduling the next retry for serial execution. Any thread executing an atomic action that causes a retry (i.e., the "winner" of a conflict) does the same thing. The result is that any pair of conflicting atomic actions quickly find themselves both scheduled for serial execution, where they cannot conflict. If an atomic action reaches a retry limit, it will become "infallible": it will wait for all active executions of atomic actions to complete and then force all new executions (including retries) to be serially scheduled. (Because read-only atomic actions cannot cause conflicts, they can still run concurrently.)
                         </p>
-                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Can I access shared data both inside and outside an atomic action?</h5>
+                        <h5 class="pt-3" id="item-9-2-3"><i class="fas fa-question-circle me-1"></i>Can I access shared data both inside and outside an atomic action?</h5>
                         <p>
                             In general, no. The <code>atomik</code> platform does not restrict access to global variables inside an atomic action, but such variables should only be accessed if they are immutable. Otherwise, you risk data races, which is exactly the problem that <code>atomik</code> solves! Even if you use <code>std::atomic</code> types for global variables, accessing a non-<code>atomik::var</code> global variable inside an atomic action subverts the <a href="#item-1-2"><i>isolation</i></a> guarantee that the effects of any atomic action will not be visible until it commits, nor will any effects outside an atomic action be visible within the atomic action. The only non-<code>atomik::var</code> variables that are safe to access from within an atomic action are local variables, thread-local variables, and immutable global variables. Fortunately, if you observe this restriction, the <code>atomik</code> platform ensures that you cannot access an <code>atomik::var</code> outside an atomic action (such access will throw an exception).
                         </p>
-                        <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Is it safe to reuse a pointer read from <code>atomik::var::get_ptr()</code>?</h5>
+                        <h5 class="pt-3" id="item-9-2-4"><i class="fas fa-question-circle me-1"></i>Can I lock or unlock a mutex, or wait on or signal a condition variable, within an atomic action?</h5>
                         <p>
-                            Yes! The internal copy-on-write implementation of <code>atomik::var::set()</code> guarantees that the address returned by <code>atomik::var::get_ptr</code> is <i>stable</i>: the returned address will never change, and the memory at that address will never be reused during the lifetime of this atomic action, even if another atomic action concurrently overwrites the value read by this atomic action, causing it to later abort.
+                            No. Although <code>atomik</code> can easily accommodate <a href="#item-9-2-1">side effects</a>, mixing synchronization paradigms is a recipe for disaster. Even if a mutex within an atomic action is unlocked on abort by RAII, locking the mutex violates the <a href="#item-1-2"><i>isolation</i></a> property. And, of course, signaling a condition variable is impossible to undo. The <code>atomik</code> platform (or any other synchronization library) cannot statically enforce this requirement, so the programmer must do so. (This doesn't prevent you from implementing heuristic approaches like linter rules, of course.)
+                        </p>
+                        <h5 class="pt-3" id="item-9-2-5"><i class="fas fa-question-circle me-1"></i>Is it safe to reuse a pointer read from <code>atomik::var::get_ptr()</code>?</h5>
+                        <p>
+                            Yes! The internal copy-on-write implementation of <code>atomik::var::set()</code> guarantees that the address returned by <code>atomik::var::get_ptr</code> is <i>stable</i>: the address and the memory it references will never change during the lifetime of this atomic action, even if another atomic action concurrently overwrites the value read by this atomic action, causing it to later abort.
                         </p>
                     </section><!--//section-->
 
                     <section class="docs-section" id="item-9-3">
                             <h2 class="section-heading">Performance</h2>
-                            <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>How much will this slow down my program?</h5>
+                            <h5 class="pt-3" id="item-9-3-1"><i class="fas fa-question-circle me-1"></i>How much will this slow down my program?</h5>
                             <p>
                                 The latency overhead of atomic actions is very low: for a single thread it's about 200ns (and improving). Of course, in a critical path it may still be too high, but only benchmarking will tell. Scalability is on par with fine-grained locking (you should expect linear scalability up to at least 4-8 threads, and considerably more threads in the near future).
                             </p>
-                            <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>How much memory does this use?</h5>
+                            <h5 class="pt-3" id="item-9-3-2"><i class="fas fa-question-circle me-1"></i>How much memory does this use?</h5>
                             <p>
                                 The base memory overhead of the <code>atomik</code> runtime (not accounting for long-lived data) is ~2.5MB per active thread. The runtime can accommodate up to 256GB of total data (with some internal overhead). Garbage collection can be delayed indefinitely by a long-running atomic action, but this can be addressed by timeout or memory usage policies configured by the user.
                             </p>
-                            <h5 class="pt-3"><i class="fas fa-question-circle me-1"></i>Could the implementation internally deadlock or livelock?</h5>
+                            <h5 class="pt-3" id="item-9-3-3"><i class="fas fa-question-circle me-1"></i>Could the implementation internally deadlock or livelock?</h5>
                             <p>
                                 No. The implementation is fully nonblocking: there are no locks used internally at all. All operations on the critical path are lock-free or wait-free.
                             </p>
