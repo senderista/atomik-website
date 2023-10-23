@@ -158,17 +158,17 @@
 
 struct bank_account {
     int balance;
-    std::mutex m;
+    volatile std::mutex mutex;
 };
 
-void increment_balance(bank_account &account, int amount)
+void increment_balance(bank_account& account, int amount)
 {
-    std::lock_guard lock{account.m};
+    std::lock_guard lock{account.mutex};
 
     account.balance += amount;
 }
 
-void racy_transfer(bank_account &from, bank_account &to, int amount)
+void racy_transfer(bank_account& from, bank_account& to, int amount)
 {
     // we do not hold both locks at the same time,
     // so a partially completed transfer is observable to other threads,
@@ -177,27 +177,30 @@ void racy_transfer(bank_account &from, bank_account &to, int amount)
     increment_balance(to, amount);
 }
 
-void deadlocking_transfer(bank_account &from, bank_account &to, int amount)
+void deadlocking_transfer(bank_account& from, bank_account& to, int amount)
 {
     // if we concurrently call this function with `from` and `to` reversed,
     // it will deadlock, because we acquire the locks in the opposite order!
-    std::lock_guard lock1{from.m};
-    std::lock_guard lock2{to.m};
+    std::lock_guard lock1{from.mutex};
+    std::lock_guard lock2{to.mutex};
 
     from.balance -= amount;
     to.balance += amount;
 }
 
-void correct_transfer(bank_account &from, bank_account &to, int amount)
+void correct_transfer(bank_account& from, bank_account& to, int amount)
 {
-    if(&from == &to) return; // avoid deadlock in case of self transfer
+    // avoid deadlock in case of self-transfer
+    if (&from == &to) return;
 
     // lock both mutexes without deadlock
-    std::lock(from.m, to.m);
-    // make sure both already-locked mutexes are unlocked at the end of scope
-    std::lock_guard lock1{from.m, std::adopt_lock};
-    std::lock_guard lock2{to.m, std::adopt_lock};
+    std::lock(from.mutex, to.mutex);
 
+    // make sure both already-locked mutexes are unlocked at end of scope
+    std::lock_guard lock1{from.mutex, std::adopt_lock};
+    std::lock_guard lock2{to.mutex, std::adopt_lock};
+
+    // finally, the business logic
     from.balance -= amount;
     to.balance += amount;
 }
@@ -224,10 +227,8 @@ struct bank_account {
 void increment_balance(atomik::var&lt;bank_account&gt; account_var, int amount)
 {
     atomik::do_atomically(
-        []() {
-            auto account = account_var.get();
-            account.balance += amount;
-            account_var.set(account);
+        [=]() {
+            account_var.set({account_var.get().balance + amount});
         }
     );
 }
@@ -235,7 +236,7 @@ void increment_balance(atomik::var&lt;bank_account&gt; account_var, int amount)
 void transfer(atomik::var&lt;bank_account&gt; account1_var, atomik::var&lt;bank_account&gt; account2_var, int amount)
 {
     atomik::do_atomically(
-        []() {
+        [=]() {
             increment_balance(account1_var, -amount);
             increment_balance(account2_var, amount);
         }
