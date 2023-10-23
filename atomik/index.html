@@ -118,6 +118,12 @@
                     <div class="docs-code-block" id="sample-locks">
                         <pre class="shadow-lg rounded">
                             <code class="hljs cpp">
+struct bank_account
+{
+    int balance;
+    mutable std::mutex mutex;
+};
+
 void transfer(bank_account& from, bank_account& to, int amount)
 {
     // avoid deadlock in case of self-transfer
@@ -143,6 +149,11 @@ void transfer(bank_account& from, bank_account& to, int amount)
                     <div class="docs-code-block" id="sample-atomik">
                         <pre class="shadow-lg rounded">
                             <code class="hljs cpp">
+struct bank_account
+{
+    int balance;
+};
+
 void transfer(
     atomik::var&lt;bank_account&gt; from,
     atomik::var&lt;bank_account&gt; to,
@@ -150,8 +161,8 @@ void transfer(
 {
     atomik::do_atomically(
         []() {
-            from.update([=](val){val.balance -= amount});
-            to.update([=](val){val.balance += amount});
+            from.set({from.get().balance - amount});
+            to.set({to.get().balance + amount});
         }
     );
 }
