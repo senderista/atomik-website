@@ -124,7 +124,10 @@ struct bank_account
     mutable std::mutex mutex;
 };
 
-void transfer(bank_account& from, bank_account& to, int amount)
+void transfer(
+    bank_account& from,
+    bank_account& to,
+    int amount)
 {
     // avoid deadlock in case of self-transfer
     if (&from == &to) return;
