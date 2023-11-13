@@ -224,21 +224,21 @@ struct bank_account {
     int balance;
 };
 
-void increment_balance(atomik::var&lt;bank_account&gt; account_var, int amount)
+void increment_balance(atomik::var&lt;bank_account&gt; account, int amount)
 {
     atomik::do_atomically(
         [=]() {
-            account_var.set({account_var.get().balance + amount});
+            account.set({account.get().balance + amount});
         }
     );
 }
 
-void transfer(atomik::var&lt;bank_account&gt; account1_var, atomik::var&lt;bank_account&gt; account2_var, int amount)
+void transfer(atomik::var&lt;bank_account&gt; from, atomik::var&lt;bank_account&gt; to, int amount)
 {
     atomik::do_atomically(
         [=]() {
-            increment_balance(account1_var, -amount);
-            increment_balance(account2_var, amount);
+            increment_balance(from, -amount);
+            increment_balance(to, amount);
         }
     );
 }
